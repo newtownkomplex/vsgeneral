@@ -1,26 +1,38 @@
 <!doctype html>
 <html lang="ja">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
-  <meta name="theme-color" content="#090d12">
-  <title>VS GENERAL</title>
-  <style>
-    *{box-sizing:border-box}
-    html,body{margin:0;width:100%;height:100%;background:#090d12;color:#fff;font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif}
-    body{display:flex;align-items:center;justify-content:center;overflow:hidden}
-    .game-shell{width:100%;height:80vh;max-width:520px;background:#10151d;border:1px solid #29313c;overflow:hidden;display:flex;align-items:center;justify-content:center;color:#8da8c8}
-    .reset-screen{width:100%;text-align:center}
-    .reset-screen h1{margin:0 0 12px;font-size:26px;letter-spacing:.12em;color:#e7e9ed}
-    .reset-screen p{margin:0;font-size:13px;color:#7e8997}
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<title>将軍様のLINE</title>
+<style>
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;background:#f0f2f5;font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif;color:#222}body{display:flex;justify-content:center;overflow:hidden}.phone{width:100%;max-width:520px;height:80vh;background:#fff;display:flex;flex-direction:column;box-shadow:0 0 30px #0002}.top{height:58px;background:#08b900;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:16px;position:relative;flex:none}.top small{position:absolute;right:12px;font-size:10px;font-weight:500}.chat{flex:1;overflow:auto;padding:16px 12px 12px;background:#8fa4b2}.day{font-size:10px;text-align:center;color:#fff;background:#718692;width:max-content;margin:0 auto 12px;padding:4px 9px;border-radius:10px}.row{display:flex;gap:7px;margin:9px 0;align-items:flex-end}.row.you{justify-content:flex-end}.avatar{width:34px;height:34px;border-radius:50%;background:#d5c09a;display:flex;align-items:center;justify-content:center;font-size:18px;flex:none}.bubble{max-width:76%;padding:10px 12px;border-radius:14px;background:#fff;font-size:14px;line-height:1.45;box-shadow:0 1px 2px #0002}.you .bubble{background:#aef37a}.choices{padding:10px;background:#f7f7f7;border-top:1px solid #ddd;flex:none}.choices p{margin:0 0 7px;font-size:11px;color:#777;text-align:center}.choice{width:100%;border:1px solid #ddd;background:#fff;border-radius:10px;padding:11px 12px;margin-top:7px;text-align:left;font-size:13px;color:#222}.choice:active{background:#eaf9e7}.result{position:absolute;inset:0;background:#0008;display:flex;align-items:center;justify-content:center;padding:24px}.resultbox{background:#fff;border-radius:18px;padding:26px 20px;text-align:center;width:min(340px,100%)}.resultbox h1{margin:0 0 8px;font-size:24px}.resultbox p{font-size:13px;color:#666;line-height:1.6}.resultbox button{border:0;background:#08b900;color:#fff;border-radius:10px;padding:12px 30px;font-weight:800}.hidden{display:none}
+</style>
 </head>
 <body>
-  <main class="game-shell">
-    <div class="reset-screen">
-      <h1>VS GENERAL</h1>
-      <p>GAME RESET</p>
-    </div>
-  </main>
+<div class="phone" id="game">
+<header class="top">将軍様 <small>オンライン</small></header>
+<main class="chat" id="chat"><div class="day">今日</div></main>
+<section class="choices" id="choices"><p>返信を選択してください</p></section>
+</div>
+<div class="result hidden" id="result"><div class="resultbox"><h1 id="resultTitle"></h1><p id="resultText"></p><button onclick="start()">最初から</button></div></div>
+<script>
+const scenes=[
+{msg:'将軍様：おい、今ちょっといいか？',choices:[['はい、なんでしょうか？',1],['今は忙しいです。',99],['既読だけつける',99]]},
+{msg:'将軍様：明日の件なんだが、資料はもう確認したか？',choices:[['はい、確認しました。',2],['まだ見ていません。',99],['たぶん大丈夫です。',99]]},
+{msg:'将軍様：そうか。では、資料の数字について一つ聞きたい。',choices:[['どの数字でしょうか？',3],['全部合っています。',99],['後で確認します。',99]]},
+{msg:'将軍様：12ページの右下にある数字だ。あれは何を表している？',choices:[['今月の実績です。',4],['昨年の実績です。',99],['予測値です。',99]]},
+{msg:'将軍様：なるほど。では、その数字を出した理由は？',choices:[['前月との比較が必要だったからです。',5],['なんとなくです。',99],['資料に書いてあったからです。',99]]},
+{msg:'将軍様：よし。そこまで把握しているなら大丈夫だ。',choices:[['ありがとうございます！',6],['では失礼します。',99],['たまたまです。',99]]},
+{msg:'将軍様：明日、私から先方に説明しておく。今日はもう休め。',choices:[['承知しました。ありがとうございます。',7],['まだ仕事があります。',7],['了解です。',7]]},
+{msg:'将軍様：では、また明日。',choices:[['お疲れさまでした！',8]]}
+];
+let scene=0,history=[];
+function addMessage(text,you=false){const r=document.createElement('div');r.className='row '+(you?'you':'');if(!you)r.innerHTML='<div class="avatar">👤</div>';r.innerHTML+=`<div class="bubble">${text}</div>`;document.getElementById('chat').appendChild(r);document.getElementById('chat').scrollTop=99999}
+function render(){const c=document.getElementById('choices');c.innerHTML='<p>返信を選択してください</p>';scenes[scene].choices.forEach(([text,next])=>{const b=document.createElement('button');b.className='choice';b.textContent=text;b.onclick=()=>choose(text,next);c.appendChild(b)})}
+function choose(text,next){addMessage(text,true);if(next===99){setTimeout(()=>finish(false),350);return}scene=next;setTimeout(()=>{addMessage(scenes[scene].msg);if(scene===8){finish(true);return}render()},450)}
+function finish(win){document.getElementById('resultTitle').textContent=win?'正解！':'不正解…';document.getElementById('resultText').textContent=win?'将軍様とのやり取りを最後まで完璧に乗り切った！':'選択を間違えてしまった。将軍様とのLINEはここで終了。';document.getElementById('result').classList.remove('hidden')}
+function start(){scene=0;document.getElementById('chat').innerHTML='<div class="day">今日</div>';document.getElementById('result').classList.add('hidden');addMessage(scenes[0].msg);render()}
+start();
+</script>
 </body>
 </html>
