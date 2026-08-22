@@ -3,36 +3,31 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
-<title>将軍様のLINE</title>
+<title>将軍様との文通</title>
 <style>
-*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;background:#f0f2f5;font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif;color:#222}body{display:flex;justify-content:center;overflow:hidden}.phone{width:100%;max-width:520px;height:80vh;background:#fff;display:flex;flex-direction:column;box-shadow:0 0 30px #0002}.top{height:58px;background:#08b900;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:16px;position:relative;flex:none}.top small{position:absolute;right:12px;font-size:10px;font-weight:500}.chat{flex:1;overflow:auto;padding:16px 12px 12px;background:#8fa4b2}.day{font-size:10px;text-align:center;color:#fff;background:#718692;width:max-content;margin:0 auto 12px;padding:4px 9px;border-radius:10px}.row{display:flex;gap:7px;margin:9px 0;align-items:flex-end}.row.you{justify-content:flex-end}.avatar{width:34px;height:34px;border-radius:50%;background:#d5c09a;display:flex;align-items:center;justify-content:center;font-size:18px;flex:none}.bubble{max-width:76%;padding:10px 12px;border-radius:14px;background:#fff;font-size:14px;line-height:1.45;box-shadow:0 1px 2px #0002}.you .bubble{background:#aef37a}.choices{padding:10px;background:#f7f7f7;border-top:1px solid #ddd;flex:none}.choices p{margin:0 0 7px;font-size:11px;color:#777;text-align:center}.choice{width:100%;border:1px solid #ddd;background:#fff;border-radius:10px;padding:11px 12px;margin-top:7px;text-align:left;font-size:13px;color:#222}.choice:active{background:#eaf9e7}.result{position:absolute;inset:0;background:#0008;display:flex;align-items:center;justify-content:center;padding:24px}.resultbox{background:#fff;border-radius:18px;padding:26px 20px;text-align:center;width:min(340px,100%)}.resultbox h1{margin:0 0 8px;font-size:24px}.resultbox p{font-size:13px;color:#666;line-height:1.6}.resultbox button{border:0;background:#08b900;color:#fff;border-radius:10px;padding:12px 30px;font-weight:800}.hidden{display:none}
+*{box-sizing:border-box}html,body{margin:0;height:100%;background:#dfe4e8;font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif;color:#222}body{display:flex;justify-content:center;overflow:hidden}.app{width:100%;max-width:520px;height:80vh;margin:auto;background:#b9c2c9;display:flex;flex-direction:column;box-shadow:0 8px 30px #87919a}.top{height:58px;background:#20252b;color:#fff;display:flex;align-items:center;padding:0 16px;border-bottom:1px solid #111}.avatar{width:38px;height:38px;border-radius:50%;background:#8d1717;display:grid;place-items:center;font-size:20px;margin-right:10px}.top strong{font-size:15px}.top small{display:block;color:#aeb5bc;font-size:10px;margin-top:2px}.chat{flex:1;overflow:auto;padding:18px 12px 14px}.day{text-align:center;color:#687078;font-size:10px;margin:2px 0 16px}.bubble{max-width:84%;background:#fff;border-radius:4px 15px 15px 15px;padding:10px 12px;margin:0 0 7px;box-shadow:0 1px 2px #9ca5aa;font-size:14px;line-height:1.6}.name{font-size:10px;color:#606970;margin:0 0 3px 3px}.stamp{font-size:9px;color:#8a9298;text-align:right;margin-top:3px}.choices{padding:10px 10px 12px;background:#eef1f3;border-top:1px solid #c3c9cd}.choices button{display:block;width:100%;border:1px solid #b7bec3;background:#fff;border-radius:12px;padding:11px 13px;margin:6px 0;text-align:left;font-size:13px;line-height:1.4;box-shadow:0 1px 2px #c2c7ca}.choices button:active{background:#e8ecef;transform:scale(.99)}.choices button:disabled{opacity:.45}.wrong{background:#2a2525;color:#fff;padding:18px;text-align:center}.wrong h2{margin:0 0 6px;font-size:19px}.wrong p{margin:0 0 12px;font-size:12px;color:#c7c1c1}.restart{border:0;border-radius:9px;padding:9px 18px;font-weight:700}.clear{text-align:center;padding:25px}.clear h2{font-size:22px}.clear p{font-size:13px;line-height:1.7}.status{font-size:10px;color:#677078;text-align:center;padding:4px}
 </style>
 </head>
 <body>
-<div class="phone" id="game">
-<header class="top">将軍様 <small>オンライン</small></header>
-<main class="chat" id="chat"><div class="day">今日</div></main>
-<section class="choices" id="choices"><p>返信を選択してください</p></section>
-</div>
-<div class="result hidden" id="result"><div class="resultbox"><h1 id="resultTitle"></h1><p id="resultText"></p><button onclick="start()">最初から</button></div></div>
+<main class="app">
+<header class="top"><div class="avatar">⚔</div><div><strong>将軍様</strong><small>オンライン</small></div></header>
+<section class="chat" id="chat"></section><div class="choices" id="choices"></div>
+</main>
 <script>
-const scenes=[
-{msg:'将軍様：おい、今ちょっといいか？',choices:[['はい、なんでしょうか？',1],['今は忙しいです。',99],['既読だけつける',99]]},
-{msg:'将軍様：明日の件なんだが、資料はもう確認したか？',choices:[['はい、確認しました。',2],['まだ見ていません。',99],['たぶん大丈夫です。',99]]},
-{msg:'将軍様：そうか。では、資料の数字について一つ聞きたい。',choices:[['どの数字でしょうか？',3],['全部合っています。',99],['後で確認します。',99]]},
-{msg:'将軍様：12ページの右下にある数字だ。あれは何を表している？',choices:[['今月の実績です。',4],['昨年の実績です。',99],['予測値です。',99]]},
-{msg:'将軍様：なるほど。では、その数字を出した理由は？',choices:[['前月との比較が必要だったからです。',5],['なんとなくです。',99],['資料に書いてあったからです。',99]]},
-{msg:'将軍様：よし。そこまで把握しているなら大丈夫だ。',choices:[['ありがとうございます！',6],['では失礼します。',99],['たまたまです。',99]]},
-{msg:'将軍様：明日、私から先方に説明しておく。今日はもう休め。',choices:[['承知しました。ありがとうございます。',7],['まだ仕事があります。',7],['了解です。',7]]},
-{msg:'将軍様：では、また明日。',choices:[['お疲れさまでした！',8]]}
+const stages=[
+{m:'貴様の隊で、足軽が三名死んだそうだな。',c:[['はっ。戦の最中のことでございます。',false],['申し訳ございません。私の指揮が至らぬばかりに。',false],['……はっ。三名が死んだことは事実にございます。',true]]},
+{m:'では聞こう。なぜ三名とも、同じ場所で死んでいる？',c:[['敵の伏兵に襲われたものと考えております。',false],['私にも、まだ分かっておりませぬ。',true],['戦場では珍しいことではございません。',false]]},
+{m:'分からぬ、か。では貴様は何を見た？',c:[['敵兵が三名を斬ったところを見ました。',false],['三名が倒れた後に、その場へ駆けつけました。',true],['暗闇だったため、何も見ておりません。',false]]},
+{m:'その三名に、共通していたことは？',c:[['特にございません。',false],['皆、同じ班の者でございました。',false],['……死ぬ前に、三人とも同じことを訴えておりました。',true]]},
+{m:'何と訴えていた？',c:[['敵が来る、と。',false],['水が欲しい、と。',false],['「夜になる前に逃げろ」と申しておりました。',true]]},
+{m:'ならば問う。貴様はなぜ逃げなかった？',c:[['私は隊長です。部下を置いて逃げるわけには参りません。',true],['怖くて動けなかったのでございます。',false],['その時は敵がいると思っておりましたので。',false]]},
+{m:'……最後に一つ。三名の死を、誰より早く私へ報告したのは誰だ？',c:[['私でございます。',true],['副長でございます。',false],['伝令の者でございます。',false]]}
 ];
-let scene=0,history=[];
-function addMessage(text,you=false){const r=document.createElement('div');r.className='row '+(you?'you':'');if(!you)r.innerHTML='<div class="avatar">👤</div>';r.innerHTML+=`<div class="bubble">${text}</div>`;document.getElementById('chat').appendChild(r);document.getElementById('chat').scrollTop=99999}
-function render(){const c=document.getElementById('choices');c.innerHTML='<p>返信を選択してください</p>';scenes[scene].choices.forEach(([text,next])=>{const b=document.createElement('button');b.className='choice';b.textContent=text;b.onclick=()=>choose(text,next);c.appendChild(b)})}
-function choose(text,next){addMessage(text,true);if(next===99){setTimeout(()=>finish(false),350);return}scene=next;setTimeout(()=>{addMessage(scenes[scene].msg);if(scene===8){finish(true);return}render()},450)}
-function finish(win){document.getElementById('resultTitle').textContent=win?'正解！':'不正解…';document.getElementById('resultText').textContent=win?'将軍様とのやり取りを最後まで完璧に乗り切った！':'選択を間違えてしまった。将軍様とのLINEはここで終了。';document.getElementById('result').classList.remove('hidden')}
-function start(){scene=0;document.getElementById('chat').innerHTML='<div class="day">今日</div>';document.getElementById('result').classList.add('hidden');addMessage(scenes[0].msg);render()}
-start();
+let stage=0,history=[];const chat=document.getElementById('chat'),choices=document.getElementById('choices');
+function add(text,me=false){const n=document.createElement('div');n.innerHTML=me?`<div style="display:flex;justify-content:flex-end"><div class="bubble" style="background:#c9f7bd;border-radius:15px 4px 15px 15px">${text}</div></div>`:`<div class="name">将軍様</div><div class="bubble">${text}</div>`;chat.appendChild(n);chat.scrollTop=chat.scrollHeight}
+function render(){choices.innerHTML='';if(stage>=stages.length){choices.innerHTML='<div class="clear"><h2>御前試合　通過</h2><p>将軍はしばし沈黙した。<br>そして一言だけ返した。</p><div class="bubble" style="margin:auto;text-align:left">「よい。貴様の話、すべて聞いた。」</div><button class="restart" onclick="location.reload()">最初から</button></div>';return}stages[stage].c.forEach((x,i)=>{const b=document.createElement('button');b.textContent=x[0];b.onclick=()=>choose(x[0],x[1]);choices.appendChild(b)})}
+function choose(text,ok){add(text,true);[...choices.children].forEach(b=>b.disabled=true);setTimeout(()=>{if(!ok){choices.innerHTML='<div class="wrong"><h2>「……話が違うな」</h2><p>将軍の疑念は、決定的なものとなった。</p><button class="restart" onclick="location.reload()">もう一度</button></div>';return}stage++;if(stage<stages.length)add(stages[stage].m);render()},450)}
+add(stages[0].m);render();
 </script>
 </body>
 </html>
