@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+  <meta name="theme-color" content="#090d12">
+  <title>VS GENERAL</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="game-shell">
+    <section class="side opponent-side">
+      <header class="side-header"><span>相手側</span></header>
+      <div class="field-title">相手フィールド</div>
+      <div class="board-row opponent-row">
+        <button class="deck opponent-deck" id="enemyDeck" aria-label="相手の山札"><span class="deck-count" id="enemyDeckCount">30</span><small>山札</small></button>
+        <div class="slot" data-owner="enemy" data-slot="0"><span>枠1</span></div>
+        <div class="slot" data-owner="enemy" data-slot="1"><span>枠2</span></div>
+        <div class="slot" data-owner="enemy" data-slot="2"><span>枠3</span></div>
+      </div>
+      <div class="status-line enemy-status"><strong id="enemyLife">20</strong><span>LP</span><span class="enemy-actions" id="enemyActions">行動待機</span></div>
+    </section>
+
+    <div class="battle-divider"><span>対戦エリア</span></div>
+
+    <section class="side player-side">
+      <div class="status-line player-status"><span class="turn-label" id="turnLabel">あなたのターン</span><span>使用</span><strong id="actionsUsed">0</strong><span>/ 2</span><strong class="life" id="playerLife">20</strong><span>LP</span></div>
+      <div class="field-title">プレイヤーフィールド</div>
+      <div class="board-row player-row">
+        <div class="slot" data-owner="player" data-slot="0"><span>枠1</span></div>
+        <div class="slot" data-owner="player" data-slot="1"><span>枠2</span></div>
+        <div class="slot" data-owner="player" data-slot="2"><span>枠3</span></div>
+        <button class="deck player-deck" id="playerDeck" aria-label="自分の山札"><span class="deck-count" id="playerDeckCount">30</span><small>山札</small></button>
+      </div>
+      <div class="hand-wrap">
+        <div class="hand-title">手札 <span id="handCount">0</span></div>
+        <div class="hand" id="hand"></div>
+      </div>
+      <div class="controls">
+        <button id="endTurn" class="end-turn">ターン終了</button>
+        <button id="restart" class="restart">リスタート</button>
+      </div>
+      <div class="log" id="log" aria-live="polite"></div>
+    </section>
+  </main>
+  <div class="modal hidden" id="resultModal">
+    <div class="result-card"><h1 id="resultTitle"></h1><p id="resultText"></p><button id="resultRestart">もう一度遊ぶ</button></div>
+  </div>
+  <script src="game.js"></script>
+</body>
+</html>
