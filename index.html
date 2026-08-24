@@ -3,34 +3,18 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
-<title>The Message of Shogun</title>
+<title>New Game</title>
 <style>
-*{box-sizing:border-box}html,body{margin:0;height:100%;background:#87ceeb;font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif;color:#222}body{display:flex;justify-content:center;overflow:hidden}.app{width:100%;max-width:520px;height:80vh;margin:auto;background:#87ceeb;display:flex;flex-direction:column;box-shadow:0 8px 30px rgba(60,110,130,.35)}.start{height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:30px;background:#87ceeb}.start h1{margin:0;font-family:Georgia,"Times New Roman",serif;font-size:34px;letter-spacing:.08em;color:#20252b;text-shadow:0 1px 0 rgba(255,255,255,.45)}.start .jp{margin-top:14px;font-size:13px;letter-spacing:.2em;color:#31515d}.start .startbtn{margin-top:42px;border:0;background:#20252b;color:#fff;border-radius:24px;padding:13px 38px;font-size:14px;font-weight:600;box-shadow:0 3px 8px rgba(30,50,60,.25)}.start .hint{margin-top:13px;font-size:10px;color:#42606d}.top{height:58px;background:#20252b;color:#fff;display:flex;align-items:center;padding:0 16px;border-bottom:1px solid #111}.avatar{width:38px;height:38px;border-radius:50%;background:#8d1717;display:grid;place-items:center;font-size:20px;margin-right:10px}.top strong{font-size:15px}.top small{display:block;color:#aeb5bc;font-size:10px;margin-top:2px}.chat{flex:1;overflow:auto;padding:18px 12px 14px;background:#87ceeb}.bubble{max-width:84%;background:#fff;border-radius:4px 15px 15px 15px;padding:10px 12px;margin:0 0 7px;box-shadow:0 1px 2px rgba(70,100,110,.35);font-size:14px;line-height:1.6}.name{font-size:10px;color:#42606d;margin:0 0 3px 3px}.choices{padding:10px 10px 12px;background:#eef1f3;border-top:1px solid #c3c9cd}.choices button{display:block;width:100%;border:1px solid #b7bec3;background:#fff;border-radius:12px;padding:11px 13px;margin:6px 0;text-align:left;font-size:13px;line-height:1.4;box-shadow:0 1px 2px #c2c7ca}.choices button:disabled{opacity:.45}.wrong{background:#2a2525;color:#fff;padding:18px;text-align:center}.wrong h2{margin:0 0 6px;font-size:19px}.wrong p{margin:0 0 12px;font-size:12px;color:#c7c1c1}.restart{border:0;border-radius:9px;padding:9px 18px;font-weight:700}.clear{text-align:center;padding:25px}.clear h2{font-size:22px}.clear p{font-size:13px;line-height:1.7}.hidden{display:none!important}
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;background:#111;color:#fff;font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif}
+body{display:flex;justify-content:center;align-items:center;overflow:hidden}
+#app{width:100%;max-width:520px;height:100dvh;background:#111;display:flex;align-items:center;justify-content:center}
 </style>
 </head>
 <body>
-<main class="app">
-<section class="start" id="start"><h1>The Message of Shogun</h1><div class="jp">将軍様からの文</div><button class="startbtn" id="startBtn">はじめる</button><div class="hint">Tap to begin</div></section>
-<section id="game" class="hidden" style="height:100%;display:flex;flex-direction:column">
-<header class="top"><div class="avatar">⚔</div><div><strong>将軍様</strong><small>オンライン</small></div></header><section class="chat" id="chat"></section><div class="choices" id="choices"></div>
-</section>
-</main>
+<main id="app"></main>
 <script>
-const stages=[
-{m:'貴様の組で、足軽が三名死んだそうだな。',c:[['はっ。戦の最中のことでございます。',false],['申し訳ございませぬ。私の指揮が至らぬばかりに。',false],['……はっ。三名が死んだことは事実にございます。',true]]},
-{m:'では聞こう。なぜ三名とも、同じ場所で死んでいる？',c:[['敵の伏兵に襲われたものと考えております。',false],['私にも、いまだ分かりませぬ。',true],['戦場では珍しきことではございませぬ。',false]]},
-{m:'分からぬ、か。では貴様は何を見た？',c:[['敵兵が三名を斬ったところを見ました。',false],['三名が倒れた後に、その場へ駆けつけました。',true],['暗闇ゆえ、何も見ておりませぬ。',false]]},
-{m:'その三名に、共通していたことは？',c:[['特にございませぬ。',false],['皆、同じ組の者でございました。',false],['……死ぬ前に、三人とも同じことを申しておりました。',true]]},
-{m:'何と申していた？',c:[['敵が来る、と。',false],['水が欲しい、と。',false],['「夜になる前に逃げよ」と申しておりました。',true]]},
-{m:'ならば問う。貴様はなぜ逃げなかった？',c:[['私は組頭にございます。手勢を置いて逃げるわけには参りませぬ。',true],['恐ろしくて、動けなかったのでございます。',false],['その時は敵がいると思うておりましたので。',false]]},
-{m:'……最後に一つ。三名の死を、誰より早く私へ届けたのは誰だ？',c:[['私でございます。',true],['副頭でございます。',false],['使いの者でございます。',false]]}
-];
-let stage=0;const start=document.getElementById('start'),game=document.getElementById('game'),chat=document.getElementById('chat'),choices=document.getElementById('choices');
-function add(text,me=false){const n=document.createElement('div');n.innerHTML=me?`<div style="display:flex;justify-content:flex-end"><div class="bubble" style="background:#c9f7bd;border-radius:15px 4px 15px 15px">${text}</div></div>`:`<div class="name">将軍様</div><div class="bubble">${text}</div>`;chat.appendChild(n);chat.scrollTop=chat.scrollHeight}
-function render(){choices.innerHTML='';if(stage>=stages.length){choices.innerHTML='<div class="clear"><h2>疑い、晴る</h2><p>将軍はしばし沈黙した。</p><div class="bubble" style="margin:auto;text-align:left">「よい。貴様の申すこと、すべて聞いた。」</div><button class="restart" onclick="location.reload()">初めから</button></div>';return}stages[stage].c.forEach(x=>{const b=document.createElement('button');b.textContent=x[0];b.onclick=()=>choose(x[0],x[1]);choices.appendChild(b)})}
-function choose(text,ok){add(text,true);[...choices.children].forEach(b=>b.disabled=true);setTimeout(()=>{if(!ok){choices.innerHTML='<div class="wrong"><h2>「……話が違うな」</h2><p>将軍の疑いは、決定的なものとなった。</p><button class="restart" onclick="location.reload()">もう一度</button></div>';return}stage++;if(stage<stages.length)setTimeout(()=>{add(stages[stage].m);render()},2000);else render()},450)}
-function begin(){start.classList.add('hidden');game.classList.remove('hidden');setTimeout(()=>{add(stages[0].m);render()},2000)}
-document.getElementById('startBtn').addEventListener('click',begin);
+// 新しいゲームはここから作成
 </script>
 </body>
 </html>
