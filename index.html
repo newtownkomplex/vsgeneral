@@ -6,109 +6,49 @@
 <meta name="theme-color" content="#159b91">
 <title>一筆パズル 50</title>
 <style>
-:root{--bg:#159b91;--bg2:#0f817a;--white:#fff;--muted:rgba(255,255,255,.72);--cell:rgba(255,255,255,.18);--line:#fff}
+:root{--bg:#159b91;--white:#fff;--muted:rgba(255,255,255,.72);--cell:rgba(255,255,255,.18)}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;width:100%;height:100%;overflow:hidden;font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;background:var(--bg);color:#fff}
-button,select{font:inherit}
-.app{height:100dvh;display:flex;flex-direction:column;max-width:560px;margin:auto;padding:18px 16px calc(12px + env(safe-area-inset-bottom));}
-header{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:52px}
-.title{font-size:21px;font-weight:800;letter-spacing:.04em}.stage-label{font-size:13px;color:var(--muted);margin-top:3px}
-.icon-btn,.primary,.secondary{border:1px solid rgba(255,255,255,.65);background:rgba(255,255,255,.12);color:#fff;border-radius:13px;padding:10px 14px;font-weight:700;cursor:pointer}.icon-btn{padding:9px 12px}
-.screen{display:none;flex:1;min-height:0}.screen.active{display:flex;flex-direction:column}
-#menu{justify-content:center;gap:20px}.menu-title{text-align:center;font-size:34px;font-weight:900;letter-spacing:.08em}.menu-sub{text-align:center;color:var(--muted);margin-top:-12px}
-.progress{height:8px;background:rgba(255,255,255,.18);border-radius:99px;overflow:hidden}.progress>i{display:block;height:100%;width:0;background:#fff;border-radius:99px}
-.stage-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:9px;overflow:auto;padding:2px 2px 8px}.stage{aspect-ratio:1;border:1px solid rgba(255,255,255,.5);border-radius:14px;background:rgba(255,255,255,.1);color:#fff;font-weight:800;font-size:16px}.stage.locked{opacity:.35}.stage.cleared{background:#fff;color:var(--bg)}
-.game-top{display:flex;align-items:center;justify-content:space-between;margin:10px 0 8px}.counter{font-size:14px;color:var(--muted)}
-.board-wrap{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;padding:4px 0}.board{position:relative;width:min(88vw,470px);height:min(88vw,470px);max-height:58vh;max-width:58vh;display:grid;grid-template-columns:repeat(5,1fr);grid-template-rows:repeat(5,1fr);touch-action:none}
-.cell{margin:4px;border-radius:11px;background:var(--cell);border:1px solid rgba(255,255,255,.22);position:relative}.cell.visited{background:rgba(255,255,255,.38)}.cell.start{box-shadow:inset 0 0 0 3px #fff}
-.line-layer{position:absolute;inset:0;pointer-events:none}.path{fill:none;stroke:#fff;stroke-width:12;stroke-linecap:round;stroke-linejoin:round;opacity:.98}
-.dot{position:absolute;width:13px;height:13px;border-radius:50%;background:#fff;transform:translate(-50%,-50%);pointer-events:none}
-.actions{display:flex;gap:10px;margin-top:8px}.actions button{flex:1}.primary{background:#fff;color:var(--bg);border-color:#fff}.secondary{background:transparent}
-.overlay{position:fixed;inset:0;background:rgba(6,73,70,.72);display:none;align-items:center;justify-content:center;padding:24px;z-index:10}.overlay.show{display:flex}.modal{width:min(420px,100%);background:var(--bg);border:1px solid rgba(255,255,255,.55);border-radius:22px;padding:26px;text-align:center;box-shadow:0 20px 70px rgba(0,0,0,.22)}.modal h2{margin:0 0 8px;font-size:27px}.modal p{margin:0 0 20px;color:var(--muted)}.modal .actions{margin-top:0}
-.hint{font-size:12px;text-align:center;color:var(--muted);margin-top:7px}
-@media(max-height:680px){.app{padding-top:10px}.board{max-height:50vh;max-width:50vh}.hint{display:none}.game-top{margin:4px 0}.actions{margin-top:4px}}
+button{font:inherit}.app{height:100dvh;display:flex;flex-direction:column;max-width:560px;margin:auto;padding:18px 16px calc(12px + env(safe-area-inset-bottom))}
+header{display:flex;align-items:center;justify-content:space-between;min-height:52px}.title{font-size:21px;font-weight:800}.stage-label{font-size:13px;color:var(--muted);margin-top:3px}
+.icon-btn,.primary,.secondary{border:1px solid rgba(255,255,255,.65);background:rgba(255,255,255,.12);color:#fff;border-radius:13px;padding:10px 14px;font-weight:700}.primary{background:#fff;color:var(--bg)}
+.screen{display:none;flex:1;min-height:0}.screen.active{display:flex;flex-direction:column}#menu{justify-content:center;gap:20px}.menu-title{text-align:center;font-size:34px;font-weight:900;letter-spacing:.08em}.menu-sub{text-align:center;color:var(--muted);margin-top:-12px}.progress{height:8px;background:rgba(255,255,255,.18);border-radius:99px;overflow:hidden}.progress>i{display:block;height:100%;width:0;background:#fff}.stage-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:9px;overflow:auto;padding:2px}.stage{aspect-ratio:1;border:1px solid rgba(255,255,255,.5);border-radius:14px;background:rgba(255,255,255,.1);color:#fff;font-weight:800}.stage.locked{opacity:.3}.stage.cleared{background:#fff;color:var(--bg)}
+.game-top{display:flex;justify-content:space-between;margin:10px 0 8px}.counter{color:var(--muted);font-size:14px}.board-wrap{flex:1;min-height:0;display:flex;align-items:center;justify-content:center}.board{position:relative;width:min(88vw,470px);height:min(88vw,470px);max-width:58vh;max-height:58vh;display:grid;grid-template-columns:repeat(5,1fr);grid-template-rows:repeat(5,1fr);touch-action:none;user-select:none}.cell{margin:4px;border-radius:11px;background:var(--cell);border:1px solid rgba(255,255,255,.22);position:relative;transition:background .08s,box-shadow .08s}.cell.visited{background:rgba(255,255,255,.58);box-shadow:inset 0 0 0 2px rgba(255,255,255,.7)}.cell.start{box-shadow:inset 0 0 0 3px #fff}.line-layer{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}.path{fill:none;stroke:#fff;stroke-width:9;stroke-linecap:round;stroke-linejoin:round}.actions{display:flex;gap:10px;margin-top:8px}.actions button{flex:1}.hint{text-align:center;color:var(--muted);font-size:12px;margin-top:7px}.overlay{position:fixed;inset:0;background:rgba(6,73,70,.72);display:none;align-items:center;justify-content:center;padding:24px;z-index:10}.overlay.show{display:flex}.modal{width:min(420px,100%);background:var(--bg);border:1px solid rgba(255,255,255,.55);border-radius:22px;padding:26px;text-align:center}.modal h2{margin:0 0 8px}.modal p{color:var(--muted);margin:0 0 18px}
+@media(max-height:680px){.app{padding-top:9px}.board{max-width:50vh;max-height:50vh}.hint{display:none}}
 </style>
 </head>
 <body>
 <div class="app">
-  <header>
-    <div><div class="title">一筆パズル</div><div class="stage-label" id="stageLabel">ステージ選択</div></div>
-    <button class="icon-btn" id="menuBtn">ステージ</button>
-  </header>
-
-  <section id="menu" class="screen active">
-    <div class="menu-title">ONE LINE</div>
-    <div class="menu-sub">すべてのマスを、1回ずつつなげよう。</div>
-    <div class="progress"><i id="progressBar"></i></div>
-    <div id="stageGrid" class="stage-grid"></div>
-  </section>
-
-  <section id="game" class="screen">
-    <div class="game-top"><div id="gameStage">STAGE 1</div><div class="counter" id="counter">1 / 25</div></div>
-    <div class="board-wrap"><div id="board" class="board"></div></div>
-    <div class="hint">指で隣のマスへドラッグ。全25マスを1回ずつ通ればクリア。</div>
-    <div class="actions"><button class="secondary" id="retryBtn">リトライ</button><button class="primary" id="nextBtn">次ステージ</button></div>
-  </section>
+<header><div><div class="title">一筆パズル</div><div class="stage-label" id="stageLabel">ステージ選択</div></div><button class="icon-btn" id="menuBtn" style="display:none">ステージ</button></header>
+<section id="menu" class="screen active"><div class="menu-title">ONE LINE</div><div class="menu-sub">すべてのマスを、1回ずつつなげよう。</div><div class="progress"><i id="progressBar"></i></div><div id="stageGrid" class="stage-grid"></div></section>
+<section id="game" class="screen"><div class="game-top"><b id="gameStage">STAGE 01</b><div class="counter" id="counter">0 / 25</div></div><div class="board-wrap"><div id="board" class="board"></div></div><div class="hint">指を押したまま、隣のマスへドラッグしてください。</div><div class="actions"><button class="secondary" id="retryBtn">リトライ</button><button class="primary" id="nextBtn">次ステージ</button></div></section>
 </div>
-
 <div id="overlay" class="overlay"><div class="modal"><h2 id="resultTitle">クリア！</h2><p id="resultText">ステージをクリアしました。</p><div class="actions"><button class="secondary" id="modalRetry">リトライ</button><button class="primary" id="modalNext">次ステージ</button></div></div></div>
-
 <script>
 'use strict';
-const SIZE=5, TOTAL=50, KEY='oneLinePuzzleCleared_v1';
-const $=id=>document.getElementById(id);
-let cleared=loadCleared(); let stage=1; let path=[]; let drawing=false; let failed=false;
-
-// 5x5のハミルトン路をベースに、各ステージで開始位置と向きを変えた50盤面。
-// どの盤面も「隣接マスのみ」「全25マスを1回ずつ」が成立する。
-const base=[];
-for(let r=0;r<SIZE;r++) for(let c=0;c<SIZE;c++) base.push(r*SIZE+(r%2===0?c:SIZE-1-c));
-const boards=Array.from({length:TOTAL},(_,s)=>{
-  const rev=(s%2)===1;
-  const rot=(s*3)%25;
-  let p=base.slice();
-  if(rev)p.reverse();
-  // Hamilton路の循環的な開始位置変更。各ステージの開始マスが変わる。
-  const idx=rot%p.length; p=p.slice(idx).concat(p.slice(0,idx));
-  return p;
-});
-
-function loadCleared(){try{return JSON.parse(localStorage.getItem(KEY)||'[]').filter(n=>Number.isInteger(n)&&n>=1&&n<=TOTAL)}catch(e){return[]}}
-function saveCleared(){localStorage.setItem(KEY,JSON.stringify([...new Set(cleared)].sort((a,b)=>a-b)))}
-function isUnlocked(n){return n===1||cleared.includes(n-1)}
-function show(screen){$('menu').classList.toggle('active',screen==='menu');$('game').classList.toggle('active',screen==='game');$('stageLabel').textContent=screen==='game'?`ステージ ${stage}`:'ステージ選択';$('menuBtn').style.display=screen==='game'?'block':'none'}
-function renderMenu(){
-  const grid=$('stageGrid');grid.innerHTML='';
-  for(let n=1;n<=TOTAL;n++){
-    const b=document.createElement('button'); b.className='stage';
-    const ok=cleared.includes(n), unlocked=isUnlocked(n); if(ok)b.classList.add('cleared'); if(!unlocked)b.classList.add('locked');
-    b.textContent=ok?'✓':n; b.disabled=!unlocked; b.onclick=()=>start(n); grid.appendChild(b);
-  }
-  $('progressBar').style.width=(cleared.length/TOTAL*100)+'%';
-}
-function center(i){const r=Math.floor(i/SIZE),c=i%SIZE;return{x:(c+.5)*100/SIZE,y:(r+.5)*100/SIZE}}
-function start(n){if(n<1||n>TOTAL||!isUnlocked(n))return;stage=n;hideOverlay();failed=false;drawing=false;path=[];show('game');buildBoard();updateCounter()}
-function buildBoard(){
-  const board=$('board');board.innerHTML='';
-  const cells=[];for(let i=0;i<SIZE*SIZE;i++){const d=document.createElement('div');d.className='cell';d.dataset.i=i;board.appendChild(d);cells.push(d)}
-  const startCell=boards[stage-1][0];cells[startCell].classList.add('start');
-  const svg=document.createElementNS('http://www.w3.org/2000/svg','http://www.w3.org/2000/svg');svg.classList.add('line-layer');svg.setAttribute('viewBox','0 0 100 100');svg.innerHTML='<polyline id="pathLine" class="path" points=""></polyline>';board.appendChild(svg);
-  $('gameStage').textContent=`STAGE ${String(stage).padStart(2,'0')}`;
-}
-function updateCounter(){$('counter').textContent=`${path.length} / 25`}
-function cellAt(x,y){const rect=$('board').getBoundingClientRect();const c=Math.floor((x-rect.left)/rect.width*SIZE),r=Math.floor((y-rect.top)/rect.height*SIZE);if(c<0||c>=SIZE||r<0||r>=SIZE)return null;return r*SIZE+c}
-function adjacent(a,b){const ar=Math.floor(a/SIZE),ac=a%SIZE,br=Math.floor(b/SIZE),bc=b%SIZE;return Math.abs(ar-br)+Math.abs(ac-bc)===1}
-function updateLine(){const pts=path.map(i=>{const p=center(i);return `${p.x},${p.y}`}).join(' ');$('pathLine').setAttribute('points',pts);document.querySelectorAll('.cell').forEach(c=>c.classList.remove('visited'));path.forEach(i=>document.querySelector(`.cell[data-i="${i}"]`)?.classList.add('visited'))}
-function fail(){if(failed)return;failed=true;drawing=false;navigator.vibrate?.([30,40,30]);setTimeout(()=>{alert('失敗！\n同じマスを通るか、離れたマスへ飛ぶことはできません。');reset()},20)}
-function begin(e){if(failed)return;e.preventDefault();const i=cellAt(e.clientX,e.clientY);if(i===null)return;const startCell=boards[stage-1][0];if(i!==startCell){fail();return}drawing=true;path=[i];updateLine();updateCounter();e.currentTarget.setPointerCapture?.(e.pointerId)}
-function move(e){if(!drawing||failed)return;e.preventDefault();const i=cellAt(e.clientX,e.clientY);if(i===null)return;const last=path[path.length-1];if(i===last)return;if(path.includes(i)){fail();return}if(!adjacent(last,i)){fail();return}path.push(i);updateLine();updateCounter();if(path.length===SIZE*SIZE){drawing=false;complete()}}
-function end(){drawing=false}
-function reset(){hideOverlay();failed=false;path=[];drawing=false;updateLine();updateCounter()}
-function complete(){if(!cleared.includes(stage)){cleared.push(stage);saveCleared()}renderMenu();$('resultTitle').textContent=stage===TOTAL?'全50ステージクリア！':'クリア！';$('resultText').textContent=stage===TOTAL?'すべてのステージを制覇しました。':'次のステージへ進めます。';$('modalNext').textContent=stage===TOTAL?'ステージ選択':'次ステージ';$('modalNext').style.display='block';$('overlay').classList.add('show');navigator.vibrate?.([40,60,80])}
-function hideOverlay(){$('overlay').classList.remove('show')}
-
-$('board').addEventListener('pointerdown',begin);$('board').addEventListener('pointermove',move);$('board').addEventListener('pointerup',end);$('board').addEventListener('pointercancel',end);$('retryBtn').onclick=reset;$('nextBtn').onclick=()=>stage<TOTAL?start(stage+1):show('menu');$('menuBtn').onclick=()=>{renderMenu();show('menu')};$('modalRetry').onclick=reset;$('modalNext').onclick=()=>stage<TOTAL?start(stage+1):show('menu');
-renderMenu();show('menu');
-</script>
-</body>
-</html>
+const SIZE=5,TOTAL=50,KEY='oneLinePuzzleCleared_v3',$=id=>document.getElementById(id);
+let cleared=load(),stage=1,path=[],drawing=false,failed=false,pointerId=null;
+const base=[];for(let r=0;r<SIZE;r++)for(let c=0;c<SIZE;c++)base.push(r*SIZE+(r%2===0?c:SIZE-1-c));
+const boards=Array.from({length:TOTAL},(_,s)=>{let p=base.slice();if(s%2)p.reverse();let k=(s*3)%25;return p.slice(k).concat(p.slice(0,k))});
+function load(){try{return JSON.parse(localStorage.getItem(KEY)||'[]').filter(n=>Number.isInteger(n)&&n>=1&&n<=TOTAL)}catch(e){return[]}}
+function save(){localStorage.setItem(KEY,JSON.stringify([...new Set(cleared)].sort((a,b)=>a-b)))}
+function unlocked(n){return n===1||cleared.includes(n-1)}
+function show(s){$('menu').classList.toggle('active',s==='menu');$('game').classList.toggle('active',s==='game');$('stageLabel').textContent=s==='game'?`ステージ ${stage}`:'ステージ選択';$('menuBtn').style.display=s==='game'?'block':'none'}
+function menu(){let g=$('stageGrid');g.innerHTML='';for(let n=1;n<=TOTAL;n++){let b=document.createElement('button');let ok=cleared.includes(n),u=unlocked(n);b.className='stage'+(ok?' cleared':'')+(u?'':' locked');b.textContent=ok?'✓':n;b.disabled=!u;b.onclick=()=>start(n);g.appendChild(b)}$('progressBar').style.width=cleared.length/TOTAL*100+'%'}
+function start(n){if(n<1||n>TOTAL||!unlocked(n))return;stage=n;resetState();show('game');build();counter()}
+function build(){let b=$('board');b.innerHTML='';for(let i=0;i<25;i++){let d=document.createElement('div');d.className='cell';d.dataset.i=i;b.appendChild(d)}document.querySelector(`[data-i="${boards[stage-1][0]}"]`).classList.add('start');let svg=document.createElementNS('http://www.w3.org/2000/svg','http://www.w3.org/2000/svg');svg.classList.add('line-layer');svg.setAttribute('viewBox','0 0 100 100');svg.innerHTML='<polyline id="pathLine" class="path" points=""/>';b.appendChild(svg);$('gameStage').textContent=`STAGE ${String(stage).padStart(2,'0')}`}
+function counter(){$('counter').textContent=`${path.length} / 25`}
+function cellAt(x,y){let r=$('board').getBoundingClientRect();let c=Math.floor((x-r.left)/r.width*SIZE),row=Math.floor((y-r.top)/r.height*SIZE);return c<0||c>=SIZE||row<0||row>=SIZE?null:row*SIZE+c}
+function adjacent(a,b){return Math.abs(Math.floor(a/5)-Math.floor(b/5))+Math.abs(a%5-b%5)===1}
+function center(i){return{x:(i%5+.5)*20,y:(Math.floor(i/5)+.5)*20}}
+function draw(){let pts=path.map(i=>{let p=center(i);return p.x+','+p.y}).join(' ');$('pathLine').setAttribute('points',pts);document.querySelectorAll('.cell').forEach(c=>c.classList.remove('visited'));path.forEach(i=>{let c=document.querySelector(`[data-i="${i}"]`);if(c)c.classList.add('visited')})}
+function down(e){if(failed)return;e.preventDefault();let i=cellAt(e.clientX,e.clientY);if(i===null)return;let s=boards[stage-1][0];if(i!==s){fail();return}pointerId=e.pointerId;drawing=true;path=[i];draw();counter();$('board').setPointerCapture?.(pointerId)}
+function move(e){if(!drawing||failed||e.pointerId!==pointerId)return;e.preventDefault();let i=cellAt(e.clientX,e.clientY);if(i===null)return;let last=path[path.length-1];if(i===last)return;if(path.includes(i)||!adjacent(last,i)){fail();return}path.push(i);draw();counter();if(path.length===25){drawing=false;complete()}}
+function up(e){if(e.pointerId===pointerId){drawing=false;pointerId=null}}
+function fail(){if(failed)return;failed=true;drawing=false;navigator.vibrate?.([30,40,30]);setTimeout(()=>{alert('失敗！\n同じマスを通るか、離れたマスへ飛ぶことはできません。');resetState();draw();counter()},30)}
+function resetState(){hide();failed=false;drawing=false;pointerId=null;path=[]}
+function reset(){resetState();draw();counter()}
+function complete(){if(!cleared.includes(stage)){cleared.push(stage);save()}menu();$('resultTitle').textContent=stage===TOTAL?'全50ステージクリア！':'クリア！';$('resultText').textContent=stage===TOTAL?'すべてのステージを制覇しました。':'次のステージへ進めます。';$('modalNext').textContent=stage===TOTAL?'ステージ選択':'次ステージ';$('overlay').classList.add('show');navigator.vibrate?.([40,60,80])}
+function hide(){$('overlay').classList.remove('show')}
+$('board').addEventListener('pointerdown',down,{passive:false});$('board').addEventListener('pointermove',move,{passive:false});$('board').addEventListener('pointerup',up);$('board').addEventListener('pointercancel',up);$('retryBtn').onclick=reset;$('nextBtn').onclick=()=>stage<TOTAL?start(stage+1):show('menu');$('menuBtn').onclick=()=>{menu();show('menu')};$('modalRetry').onclick=reset;$('modalNext').onclick=()=>stage<TOTAL?start(stage+1):show('menu');menu();show('menu');
+</script></body></html>
